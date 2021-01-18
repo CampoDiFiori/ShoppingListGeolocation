@@ -28,6 +28,8 @@ class FavoriteShopListActivity : BaseActivity() {
     var provider: String? = null
     var currentLocation: Location? = null;
     lateinit var geoClient: GeofencingClient
+    lateinit var locationListener: LocationListener
+    lateinit var locationManager: LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +53,61 @@ class FavoriteShopListActivity : BaseActivity() {
         rv.adapter = FavoriteShopListAdapter(this, userShopListRef)
 
         findViewById<FloatingActionButton>(R.id.favoriteShopFab).setOnClickListener{
+
+            val perms = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+//                Manifest.permission.ACCESS_BACKGROUND_LOCATION # asking for this permission makes requestPermissions not show the dialog somehow
+            )
+            val requestCode = 1
+            val fineLocationPermission = ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            val coarseLocationPermission = ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+
+            if (fineLocationPermission != PackageManager.PERMISSION_GRANTED &&
+                coarseLocationPermission != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, perms, requestCode)
+                return@setOnClickListener
+            }
+
+            locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val criteria = Criteria()
+            criteria.isAltitudeRequired = true
+            criteria.accuracy = Criteria.ACCURACY_FINE
+            criteria.powerRequirement = Criteria.NO_REQUIREMENT
+            provider = locationManager.getBestProvider(criteria, false)
+            locationListener = object: LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    Toast.makeText(this@FavoriteShopListActivity, "New location",
+                        Toast.LENGTH_SHORT).show()
+                    Log.i("location", "Change of location detected")
+                    currentLocation = location
+                }
+                override fun onProviderEnabled(provider: String) {
+                    super.onProviderEnabled(provider)
+                    Toast.makeText(this@FavoriteShopListActivity, "Provider enabled",
+                        Toast.LENGTH_SHORT).show()
+                }
+                override fun onProviderDisabled(provider: String) {
+                    super.onProviderDisabled(provider)
+                    Toast.makeText(this@FavoriteShopListActivity, "Provider disabled",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+            locationManager.requestLocationUpdates(provider.toString(), 10000L, 1F, locationListener)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1F, locationListener)
+
             if (currentLocation != null) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val newShop = Shop(
                             name = "New Shop",
-                            description = "Example description}",
+                            description = "Example description",
                             radius = 100f,
                             inside = false,
                             latitude = currentLocation!!.latitude,
@@ -69,62 +121,6 @@ class FavoriteShopListActivity : BaseActivity() {
                 Toast.makeText(this, "Just a second, your location history is still empty", Toast.LENGTH_SHORT).show()
             }
         }
-
-        val perms = arrayOf(
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-        val requestCode = 1
-        val fineLocationPermission = ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        )
-        val coarseLocationPermission = ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-        val backgroundLocationPermission = ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        )
-
-        if (fineLocationPermission != PackageManager.PERMISSION_GRANTED &&
-                coarseLocationPermission != PackageManager.PERMISSION_GRANTED &&
-                backgroundLocationPermission != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(perms, requestCode)
-            println("Requested permissions")
-            return
-        }
-
-        // TODO move this to MainActivity, maybe? + call : locationManager.removeUpdates(ll)
-        val locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val criteria = Criteria()
-        criteria.isAltitudeRequired = true
-        criteria.accuracy = Criteria.ACCURACY_FINE
-        criteria.powerRequirement = Criteria.NO_REQUIREMENT
-        provider = locationManager.getBestProvider(criteria, false)
-        val locationListener = object: LocationListener {
-            override fun onLocationChanged(location: Location) {
-                Toast.makeText(this@FavoriteShopListActivity, "New location",
-                        Toast.LENGTH_SHORT).show()
-                Log.i("location", "Change of location detected")
-                currentLocation = location
-            }
-            override fun onProviderEnabled(provider: String) {
-                super.onProviderEnabled(provider)
-                Toast.makeText(this@FavoriteShopListActivity, "Provider enabled",
-                        Toast.LENGTH_SHORT).show()
-            }
-            override fun onProviderDisabled(provider: String) {
-                super.onProviderDisabled(provider)
-                Toast.makeText(this@FavoriteShopListActivity, "Provider disabled",
-                        Toast.LENGTH_SHORT).show()
-            }
-        }
-        locationManager.requestLocationUpdates(provider.toString(), 10000L, 1F, locationListener)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1F, locationListener)
     }
 
     private fun getGeofencingRequest(geofence: Geofence): GeofencingRequest {
@@ -133,6 +129,7 @@ class FavoriteShopListActivity : BaseActivity() {
             .addGeofence(geofence)
             .build()
     }
+
     private fun getGeofencePendingIntent(shop: Shop): PendingIntent {
         return PendingIntent.getBroadcast(
             this, 0,
