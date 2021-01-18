@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <RadioGroup
+            android:id="@+id/themeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+
+            >
+
+            <TextView
+                android:id="@+id/themeRadioGroupTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/theme"
+                android:textSize="18sp" />
+            <RadioButton
+                android:id="@+id/lightTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/light"
+                android:onClick="onThemeChange"/>
+
+            <RadioButton
+                android:id="@+id/darkTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dark"
+                android:onClick="onThemeChange"/>
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/textSizeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+        >
+        <TextView
+            android:id="@+id/textSizeRadioGroupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency"
+            android:textSize="18sp" />
+        <RadioButton
+            android:id="@+id/pln"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/PLN"
+            android:onClick="onCurrencyChange"
+            />
+
+        <RadioButton
+            android:id="@+id/eur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/EUR"
+            android:onClick="onCurrencyChange"/>
+    </RadioGroup>
+        <Button
+            android:id="@+id/settingsOk"
+            android:onClick="onSettingsClickOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:layout_margin="40dp"
+            >
+
+        </Button>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
