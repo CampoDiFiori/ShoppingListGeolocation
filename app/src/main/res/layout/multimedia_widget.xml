@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/next_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/next_photo"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/website"
+        android:layout_toEndOf="@+id/next_photo"
+        android:id="@+id/goToWebpage"
+        />
+
+    <Button
+        android:id="@+id/play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/play_pause"
+        android:layout_below="@+id/next_photo"
+        />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/stop"
+        android:layout_toEndOf="@+id/play_pause"
+        android:layout_below="@+id/next_photo"
+        />
+
+    <Button
+        android:id="@+id/next_song"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/next_song"
+        android:layout_toEndOf="@+id/stop"
+        android:layout_below="@+id/next_photo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/text_view"
+        android:text="@string/not_playing"
+        android:layout_below="@id/play_pause"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/u21"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_below="@+id/text_view"
+        />
+
+
+
+    <!--<Button-->
+<!--        android:id="@+id/website"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:text="@string/website"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:onClick="onWebsiteClick"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/images"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginTop="35dp"-->
+<!--        android:text="@string/images"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/website"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/website"-->
+<!--        android:onClick="onImagesClick"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/music"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginTop="35dp"-->
+<!--        android:text="@string/music"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/images"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/images"-->
+<!--        android:onClick="onMusicClick"-->
+<!--        />-->
+
+
+</RelativeLayout>

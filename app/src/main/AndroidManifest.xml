@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +21,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShoppingList">
+        <receiver android:name=".MultimediaWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.dudko.shoppinglist.NEXT_IMAGE" />
+                <action android:name="com.dudko.shoppinglist.PLAY_PAUSE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/multimedia_widget_info" />
+        </receiver>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -34,8 +47,7 @@
 
         <activity
             android:name=".MapActivity"
-            android:label="@string/title_activity_map"
-            />
+            android:label="@string/title_activity_map" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,9 +62,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".FavoriteShopListActivity" />
-        <receiver android:name=".GeofenceReceiver">
 
-        </receiver>
+        <receiver android:name=".GeofenceReceiver"></receiver>
     </application>
 
 </manifest>
